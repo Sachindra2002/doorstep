@@ -4,9 +4,17 @@
         <servlet-name>VisitorController</servlet-name>
         <servlet-class>Controller.VisitorController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RestaurantController</servlet-name>
+        <servlet-class>Controller.RestaurantController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VisitorController</servlet-name>
         <url-pattern>/VisitorController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RestaurantController</servlet-name>
+        <url-pattern>/RestaurantController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
