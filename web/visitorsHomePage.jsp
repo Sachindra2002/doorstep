@@ -35,7 +35,7 @@
 
                 <button class="openbtn" onclick="openNav()">☰</button> 
                 <div class="centerHeader">
-                    <a href="#"><img src="images/Capture3.PNG"  width="230"></a>
+                    <a href="#"><img src="Images/Capture3.PNG"  width="230"></a>
                 </div>
                 <a id="right" href="#">Sign in</a>
                 <div class="search-container">
@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="banner">
-            <img src="images/banner.png" width="1300">
+            <img src="Images/banner.png" width="1300">
         </div>
         <div class="categories">
 
