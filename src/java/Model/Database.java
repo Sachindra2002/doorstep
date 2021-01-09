@@ -7,35 +7,44 @@ package Model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
  * @author Sachindra Rodrigo
  */
 public class Database {
-    public static Connection getConnection(){
-        String URL = "jdbc:mysql://localhost:3306/doorstep";
-        String username = "root";
-        String password = "root";
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, username, password);
-            return con;
-            
-           
-        }
-        catch (Exception ex){
-            System.out.println("Database.getConnection() Error -->"+ ex.getMessage());
-            return null;
-        }
+    private final static Database DATABASE_CONNECTION = new Database();    
+    private Connection connection;
+    private final String URL, username, password;
+
+    // Private constructor to make sure class cannot be instantiated seperately.
+    private Database() {
+        URL = "jdbc:mysql://localhost:3306/doorstep";
+        username = "root";
+        password = "root";
     }
-    public static void close(Connection con){
-        try{
-            con.close();
+    
+    //Static method to get the created instance of the singleton object
+    public static Database getDBConnection() {
+        return DATABASE_CONNECTION;
+    }
+
+    /* To connect to the database and get the connection*/
+    public Connection connectToDatabase() {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            // New connection is made to the database.
+            connection = DriverManager.getConnection(URL, username, password);
+
+        } catch (ClassNotFoundException | SQLException e) {
+            // Any errors are caught and displayed
+            e.printStackTrace();
         }
-        catch (Exception ex){
-            
-        }
+
+        // The connection is returned
+        return connection;
     }
     
 }
