@@ -45,7 +45,7 @@ public class RegisterServlet extends HttpServlet {
         String Address = request.getParameter("address");
         String password = request.getParameter("password");
         Part filePart = request.getPart("photo");
-        String role = "member";
+        String role = "customer";
         if (dao.checkUserExists(email)) {
             
             RequestDispatcher rs = request.getRequestDispatcher("registerError1.html");
@@ -91,7 +91,7 @@ public class RegisterServlet extends HttpServlet {
             
             Users user = new Users(firstName, lastName, email,password, Address, dob, phone, role, photo);
             dao.addUser(user);
-            response.sendRedirect("success.html");
+            response.sendRedirect("registerSuccess.html");
         }
     }
 

@@ -24,6 +24,23 @@ public class Users {
         this.profilePic = profilePic;
     }
 
+    public Users(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public Users(String firstName, String lastName, String email, String address, String phone, String role, String profilePic) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.address = address;
+        this.phone = phone;
+        this.role = role;
+        this.profilePic = profilePic;
+    }
+    
+    
+
     public String getFirstName() {
         return firstName;
     }

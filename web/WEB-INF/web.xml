@@ -12,6 +12,22 @@
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>Controller.RegisterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RedirectingController</servlet-name>
+        <servlet-class>Controller.RedirectingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminHomeController</servlet-name>
+        <servlet-class>Controller.AdminHomeController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerHomeController</servlet-name>
+        <servlet-class>Controller.CustomerHomeController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>loginController</servlet-name>
+        <servlet-class>Controller.loginController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VisitorController</servlet-name>
         <url-pattern>/VisitorController</url-pattern>
@@ -23,6 +39,22 @@
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RedirectingController</servlet-name>
+        <url-pattern>/RedirectingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminHomeController</servlet-name>
+        <url-pattern>/AdminHomeController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerHomeController</servlet-name>
+        <url-pattern>/CustomerHomeController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loginController</servlet-name>
+        <url-pattern>/loginController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
