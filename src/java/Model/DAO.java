@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -89,5 +91,57 @@ public class DAO {
         }
         return null;
    }
+
+    public List<Restaurants> getPopularRestaurants() {
+        List<Restaurants> popularRestaurants = new ArrayList<Restaurants>();
+        try
+        {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM restaurants where ratings>=?");
+            ps.setInt(1, 3);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+            {
+                String restaurantName = rs.getString("restaurantName");
+                String restaurantPic = rs.getString("restaurantPic");
+                String restaurantPhone = rs.getString("restaurantPhone");
+                String restaurantEmail = rs.getString("restaurantEmail");
+                String restaurantAddress = rs.getString("restaurantAddress");
+                String restaurantStatus = rs.getString("restaurantStatus");
+                String restaurantCategory = rs.getString("category");
+                Restaurants allPopularRestaurants = new Restaurants(restaurantName, restaurantPic, restaurantPhone, restaurantEmail, restaurantAddress, restaurantStatus, restaurantCategory );
+                popularRestaurants.add(allPopularRestaurants);
+            }
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return popularRestaurants;
+    }
+
+    public List<Restaurants> getSrilankanRestaurants() {
+        List<Restaurants> srilankanRestaurants = new ArrayList<Restaurants>();
+        try
+        {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM restaurants where category=?");
+            ps.setString(1,"srilankan");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+            {
+                String restaurantName = rs.getString("restaurantName");
+                String restaurantPic = rs.getString("restaurantPic");
+                String restaurantPhone = rs.getString("restaurantPhone");
+                String restaurantEmail = rs.getString("restaurantEmail");
+                String restaurantAddress = rs.getString("restaurantAddress");
+                String restaurantStatus = rs.getString("restaurantStatus");
+                String restaurantCategory = rs.getString("category");
+                Restaurants allSrilankanRestaurants = new Restaurants(restaurantName, restaurantPic, restaurantPhone, restaurantEmail, restaurantAddress, restaurantStatus, restaurantCategory );
+                srilankanRestaurants.add(allSrilankanRestaurants);
+            }
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return srilankanRestaurants;
+    }
     
 }

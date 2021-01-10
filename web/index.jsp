@@ -25,7 +25,7 @@
         <div class="topnav" id="mytopnav">
             <div id="mySidebar" class="sidebar">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-                <a href="#">Sign in</a>
+                <a href="login.html">Sign in</a>
                 <a href="#">Add your restaurant</a>
                 <a href="#">Log to your restaurant</a>
                 <a id="sidebarbottom" href="#">Contact Us</a>
@@ -37,7 +37,7 @@
                 <div class="centerHeader">
                     <a href="#"><img src="Images/Capture3.PNG"  width="230"></a>
                 </div>
-                <a id="right" href="#">Sign in</a>
+                <a id="right" href="login.html">Sign in</a>
                 <div class="search-container">
                     <form action="#">
                         <input type="text" placeholder="Search.." name="search">
@@ -51,12 +51,12 @@
         </div>
         <div class="buttons">
             <div class="center">
-                <a href="#">
+                <a href="register.html">
                     <button class="button">Create new Account</button>
                 </a>
             </div>
             <div class="center">
-                <a href="#">
+                <a href="login.html">
                     <button class="button">Sign in</button>
                 </a>
             </div>

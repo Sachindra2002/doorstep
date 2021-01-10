@@ -4,15 +4,20 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
-    Created on : Nov 28, 2020, 4:01:06 PM
+    Created on : Jan 10, 2021, 8:56:00 PM
     Author     : Sachindra Rodrigo
 */
+
 body{
     font-family: sans-serif;
 }
-
-
-
+html {
+    overflow:   scroll;
+}
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
 .centerHeader{
     float: left;
     margin-left: 10px;
@@ -135,26 +140,63 @@ body{
     color: black;
     transition: 0.1s;
 }
-.center{
-    text-align: center;
-    margin-top: 20px;
+.greetings{
+    margin-left: 80px;
+    font-family: sans-serif;
+    font-size: 30px;
 }
-.button{
-    border: none;
-    outline: none;
-    height: 40px;
-    width: 280px;
-    background: #39ac31;
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    border-radius: 5px;
+#time{
+    color: #39ac31;
 }
-.buttons{
-    margin-top: 60px;
+.topic{
+    margin-left: 80px;
 }
-.button:hover{
+.Popular{
+    margin-left: 80px;
+    margin-right: 80px;
+    height: 320px;
+    overflow: auto;
+}
+.restaurantName{
+    margin-left: 75px;
+    margin-top: 5px;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+.dummy{
+    height: 100px;
+}
+.category{
+    margin-bottom: 5px;    
+}
+.status{
+    margin-bottom: 5px;
+}
+.order{
+    margin-left: 75px;  
+    margin-top: 15px;
+    font-size: 20px;
+}
+.order a{
+    text-decoration: none;
+    color: limegreen;
+    margin-top: 5px;
+}
+.order a:hover{
+    border-bottom: 3px solid limegreen;
     transition: 0.1s;
-    background: lime;
+}
+.restaurantBox{
+    width: 280px;
+    float: left;
+    margin-right: 10px;
+}
+.restaurantBox:hover{
     cursor: pointer;
+}
+.srilankan{
+    margin-left: 80px;
+    margin-right: 80px;
+    height: 320px;
+    overflow: auto;
 }

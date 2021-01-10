@@ -5,8 +5,12 @@
  */
 package Controller;
 
+import Model.DAO;
+import Model.Restaurants;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,6 +37,13 @@ public class CustomerHomeController extends HttpServlet {
     }
     private void CustomerHome (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        DAO dao = new DAO();
+        List<Restaurants> popularRestaurants = new ArrayList<>();
+        List<Restaurants> srilankanRestaurants = new ArrayList<>();
+        popularRestaurants = dao.getPopularRestaurants();
+        srilankanRestaurants = dao.getSrilankanRestaurants();
+        request.setAttribute("RESTAURANT_LIST", popularRestaurants);
+        request.setAttribute("SRILANKAN_LIST", srilankanRestaurants);
         RequestDispatcher dispatcher = request.getRequestDispatcher("customerHome.jsp");
         dispatcher.forward(request, response); 
     
