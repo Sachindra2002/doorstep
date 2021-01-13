@@ -143,5 +143,31 @@ public class DAO {
         }
         return srilankanRestaurants;
     }
+
+    public List<Items> getMenuItems(String restaurantName) throws SQLException {
+        List<Items> menuItems = new ArrayList<Items>();
+        try
+        {
+            PreparedStatement ps = connection.prepareStatement("SELECT itemId, itemName, itemCategory, unitPrice, itemQty, totalPrice, itemPic FROM menu where restaurant=?");
+            ps.setString(1, restaurantName);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+            {
+                String itemId = rs.getString("itemId");
+                String itemName = rs.getString("itemName");
+                String itemCategory = rs.getString("itemCategory");
+                Double unitPrice = rs.getDouble("unitPrice");
+                int itemQty = rs.getInt("itemQty");
+                Double totalPrice = rs.getDouble("totalPrice");
+                String itemPic = rs.getString("itemPic");
+                Items item = new Items(itemId, itemName, itemCategory, unitPrice, itemQty, totalPrice, itemPic);
+                menuItems.add(item);
+            }
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return menuItems;
+    }
     
 }

@@ -28,6 +28,14 @@
         <servlet-name>loginController</servlet-name>
         <servlet-class>Controller.loginController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrderController</servlet-name>
+        <servlet-class>Controller.OrderController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InquiryServlet</servlet-name>
+        <servlet-class>Controller.InquiryServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VisitorController</servlet-name>
         <url-pattern>/VisitorController</url-pattern>
@@ -56,6 +64,22 @@
         <servlet-name>loginController</servlet-name>
         <url-pattern>/loginController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderController</servlet-name>
+        <url-pattern>/OrderController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InquiryServlet</servlet-name>
+        <url-pattern>/InquiryServlet</url-pattern>
+    </servlet-mapping>
+    <filter>
+        <filter-name>AdminFilter</filter-name> <!-- mandatory -->
+        <filter-class>Controller.ProxyFilter</filter-class> <!-- mandatory -->
+    </filter>
+    <filter-mapping>  
+        <filter-name>AdminFilter</filter-name>  
+        <url-pattern>/InquiryServlet</url-pattern>  
+    </filter-mapping>
     <session-config>
         <session-timeout>
             30

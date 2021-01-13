@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Sachindra Rodrigo
  */
+// Facade pattern to direct users to respective home page according to user type
 public class RedirectingController extends HttpServlet {
 
     @Override

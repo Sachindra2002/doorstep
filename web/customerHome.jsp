@@ -56,37 +56,57 @@
         <h2 class="topic">Popular Near You</h2>
         <div class="Popular">
             <c:forEach var="restaurant" items="${RESTAURANT_LIST}">
+                <c:url var="orderAction" value="OrderController">
+                    <c:param name="command" value="VIEWMENU"/>
+                    <c:param name="restaurantPic" value="${restaurant.restaurantPic}"/>
+                    <c:param name="restaurantName" value="${restaurant.restaurantName}"/>
+                    <c:param name="restaurantAddress" value="${restaurant.restaurantAddress}"/>
+                    <c:param name="restaurantPhone" value="${restaurant.restaurantPhone}"/>
+                    <c:param name="restaurantEmail" value="${restaurant.restaurantEmail}"/>
+                    <c:param name="restaurantCategory" value="${restaurant.restaurantCategory}"/>
+                    <c:param name="restaurantStatus" value="${restaurant.restaurantStatus}"/>
+                </c:url>
                 <div class="restaurantBox">
-                <img src="${restaurant.restaurantPic}" alt="image" width="280"/>
-                <div><h3 class="restaurantName">${restaurant.restaurantName}</h3></div>
-                <div class="category">${restaurant.restaurantCategory}</div>
-                <div class="status">Status - ${restaurant.restaurantStatus}</div> 
-                <div class="order"><a href="${orderAction}">Order Now</a></div>
-            </div>
+                    <img src="${restaurant.restaurantPic}" alt="image" width="280"/>
+                    <div><h3 class="restaurantName">${restaurant.restaurantName}</h3></div>
+                    <div class="category">${restaurant.restaurantCategory}</div>
+                    <div class="status">Status - ${restaurant.restaurantStatus}</div> 
+                    <div class="order"><a href="${orderAction}">Order Now</a></div>
+                </div>
             </c:forEach>
         </div>
         <h2 class="topic">Sri-Lankan Culture</h2>
         <div class="srilankan">
             <c:forEach var="srilankan" items="${SRILANKAN_LIST}">
+                <c:url var="orderAction" value="OrderController">
+                    <c:param name="command" value="VIEWMENU"/>
+                    <c:param name="restaurantPic" value="${srilankan.restaurantPic}"/>
+                    <c:param name="restaurantName" value="${srilankan.restaurantName}"/>
+                    <c:param name="restaurantAddress" value="${srilankan.restaurantAddress}"/>
+                    <c:param name="restaurantPhone" value="${srilankan.restaurantPhone}"/>
+                    <c:param name="restaurantEmail" value="${srilankan.restaurantEmail}"/>
+                    <c:param name="restaurantCategory" value="${srilankan.restaurantCategory}"/>
+                    <c:param name="restaurantStatus" value="${srilankan.restaurantStatus}"/>
+                </c:url>
                 <div class="restaurantBox">
-                <img src="${srilankan.restaurantPic}" alt="image" width="280"/>
-                <div><h3 class="restaurantName">${srilankan.restaurantName}</h3></div>
-                <div class="category">${srilankan.restaurantCategory}</div>
-                <div class="status">Status - ${srilankan.restaurantStatus}</div> 
-                <div class="order"><a href="${orderAction}">Order Now</a></div>
-            </div>
+                    <img src="${srilankan.restaurantPic}" alt="image" width="280"/>
+                    <div><h3 class="restaurantName">${srilankan.restaurantName}</h3></div>
+                    <div class="category">${srilankan.restaurantCategory}</div>
+                    <div class="status">Status - ${srilankan.restaurantStatus}</div> 
+                    <div class="order"><a href="${orderAction}">Order Now</a></div>
+                </div>
             </c:forEach>
         </div>
         <h2 class="topic">Indian Culture</h2>
         <div class="srilankan">
             <c:forEach var="indian" items="${INDIAN_LIST}">
                 <div class="restaurantBox">
-                <img src="${srilankan.restaurantPic}" alt="image" width="280"/>
-                <div><h3 class="restaurantName">${srilankan.restaurantName}</h3></div>
-                <div class="category">${srilankan.restaurantCategory}</div>
-                <div class="status">Status - ${srilankan.restaurantStatus}</div> 
-                <div class="order"><a href="${orderAction}">Order Now</a></div>
-            </div>
+                    <img src="${indian.restaurantPic}" alt="image" width="280"/>
+                    <div><h3 class="restaurantName">${indian.restaurantName}</h3></div>
+                    <div class="category">${indian.restaurantCategory}</div>
+                    <div class="status">Status - ${indian.restaurantStatus}</div> 
+                    <div class="order"><a href="${orderAction}">Order Now</a></div>
+                </div>
             </c:forEach>
         </div>
         <button onclick="topFunction()" id="myBtn" title="Go to top">Up</button>
@@ -123,19 +143,19 @@
                 document.documentElement.scrollTop = 0;
             }
             var myDate = new Date();
-                        var hrs = myDate.getHours();
+            var hrs = myDate.getHours();
 
-                        var greet;
+            var greet;
 
-                        if (hrs < 12)
-                            greet = 'Good Morning';
-                        else if (hrs >= 12 && hrs <= 14)
-                            greet = 'Good Afternoon';
-                        else if (hrs >= 14 && hrs <= 24)
-                            greet = 'Good Evening';
+            if (hrs < 12)
+                greet = 'Good Morning';
+            else if (hrs >= 12 && hrs <= 14)
+                greet = 'Good Afternoon';
+            else if (hrs >= 14 && hrs <= 24)
+                greet = 'Good Evening';
 
-                        document.getElementById('time').innerHTML =
-                                '<b>' + greet;
+            document.getElementById('time').innerHTML =
+                    '<b>' + greet;
         </script>
     </body>
 </html>
@@ -146,10 +166,10 @@
 
 
 
-            <%--<div class="restaurantBox">
-                <img src="restaurantImages/pizza.jpg" alt="image" width="280"/>
-                <div><h3 class="restaurantName">La Pizzeria</h3></div>
-                <div class="category">Italian • Pizza</div>
-                <div class="status">Status - Available</div> 
-                <div class="order"><a href="#">Order Now</a></div>
-            </div>--%>
+<%--<div class="restaurantBox">
+    <img src="restaurantImages/pizza.jpg" alt="image" width="280"/>
+    <div><h3 class="restaurantName">La Pizzeria</h3></div>
+    <div class="category">Italian • Pizza</div>
+    <div class="status">Status - Available</div> 
+    <div class="order"><a href="#">Order Now</a></div>
+</div>--%>
