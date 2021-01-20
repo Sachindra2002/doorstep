@@ -10,31 +10,42 @@ package Model;
  * @author Sachindra Rodrigo
  */
 public class Items {
-    String itemId, itemName, itemCategory , restaurant, itemPic;
-    Double unitPrice, totalPrice;
+    String itemId, itemName, itemCategory , itemPic;
+    Double unitPrice;
     int itemQty;
-
-    public Items(String itemId, String itemName, String itemCategory, String restaurant, String itemPic, Double unitPrice, Double totalPrice, int itemQty) {
+    private Restaurants restaurant;
+    private double totalPriceInCart;
+    public Items(String itemId, String itemName, String itemCategory, Restaurants restaurant, String itemPic, double unitPrice, double totalPrice, int itemQty) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemCategory = itemCategory;
         this.restaurant = restaurant;
         this.itemPic = itemPic;
         this.unitPrice = unitPrice;
-        this.totalPrice = totalPrice;
+        this.totalPriceInCart = totalPrice;
         this.itemQty = itemQty;
     }
 
-    Items(String itemId, String itemName, String itemCategory, Double unitPrice, int itemQty, Double totalPrice, String itemPic) {
+    Items(String itemId, String itemName, String itemCategory, Double unitPrice, int itemQty, double totalPrice, String itemPic) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemCategory = itemCategory;
         this.unitPrice = unitPrice;
-        this.totalPrice = totalPrice;
+        this.totalPriceInCart = totalPrice;
         this.itemQty = itemQty;
         this.itemPic = itemPic;
     }
 
+    public Items(String itemName, String category, String unitPrice, Restaurants restaurantObject) {
+    }
+
+    public Items(String itemId, String itemName, String itemCategory, Double unitPrice) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.itemCategory = itemCategory;
+        this.unitPrice = unitPrice;
+    }
+    
     public String getItemId() {
         return itemId;
     }
@@ -59,14 +70,6 @@ public class Items {
         this.itemCategory = itemCategory;
     }
 
-    public String getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(String restaurant) {
-        this.restaurant = restaurant;
-    }
-
     public String getItemPic() {
         return itemPic;
     }
@@ -83,14 +86,6 @@ public class Items {
         this.unitPrice = unitPrice;
     }
 
-    public Double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     public int getItemQty() {
         return itemQty;
     }
@@ -98,6 +93,21 @@ public class Items {
     public void setItemQty(int itemQty) {
         this.itemQty = itemQty;
     }
-    
-    
+
+    public Restaurants getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurants restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public double getTotalPriceInCart() {
+        return totalPriceInCart;
+    }
+
+    public void setTotalPriceInCart(double totalPriceInCart) {
+        this.totalPriceInCart = totalPriceInCart;
+    }
+
 }

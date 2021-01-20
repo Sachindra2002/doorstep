@@ -36,6 +36,18 @@
         <servlet-name>InquiryServlet</servlet-name>
         <servlet-class>Controller.InquiryServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddRestaurantController</servlet-name>
+        <servlet-class>Controller.AddRestaurantController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddFoodToMenuController</servlet-name>
+        <servlet-class>Controller.AddFoodToMenuController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerController</servlet-name>
+        <servlet-class>Controller.CustomerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VisitorController</servlet-name>
         <url-pattern>/VisitorController</url-pattern>
@@ -73,13 +85,31 @@
         <url-pattern>/InquiryServlet</url-pattern>
     </servlet-mapping>
     <filter>
-        <filter-name>AdminFilter</filter-name> <!-- mandatory -->
-        <filter-class>Controller.ProxyFilter</filter-class> <!-- mandatory -->
+        <filter-name>AdminFilter</filter-name>
+        <!-- mandatory -->
+        <filter-class>Controller.ProxyFilter</filter-class>
+        <!-- mandatory -->
     </filter>
-    <filter-mapping>  
-        <filter-name>AdminFilter</filter-name>  
-        <url-pattern>/InquiryServlet</url-pattern>  
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/InquiryServlet</url-pattern>
     </filter-mapping>
+    <servlet-mapping>
+        <servlet-name>AddRestaurantController</servlet-name>
+        <url-pattern>/AddRestaurantController</url-pattern>
+    </servlet-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/AddRestaurantController</url-pattern>
+    </filter-mapping>
+    <servlet-mapping>
+        <servlet-name>AddFoodToMenuController</servlet-name>
+        <url-pattern>/AddFoodToMenuController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerController</servlet-name>
+        <url-pattern>/CustomerController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

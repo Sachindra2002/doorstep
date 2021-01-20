@@ -56,7 +56,11 @@
         <h2 class="topic">Menu</h2>
         <div class="menu">
             <c:forEach var="items" items="${MENU_LIST}">
-                <a href="${action}">
+                <c:url var="addCart" value="CustomerController">
+                    <c:param name="itemID" value="${items.itemId}"/>
+                    <c:param name="command" value="ADDTOCART"/>
+                </c:url>
+                <a href="${addCart}">
                 <div class="menuItem">
                     <div class="itemName">${items.itemName}</div><br>
                     <div class="itemPrice">LKR ${items.unitPrice}</div>

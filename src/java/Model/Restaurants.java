@@ -9,7 +9,7 @@ package Model;
  *
  * @author Sachindra Rodrigo
  */
-public class Restaurants {
+public class Restaurants implements Observer {
     String restaurantName, restaurantPic, restaurantPhone, restaurantEmail, restaurantAddress, restaurantStatus, restaurantCategory, restaurantCity, password;
     int restaurantRatings;
 
@@ -34,6 +34,10 @@ public class Restaurants {
         this.restaurantAddress = restaurantAddress;
         this.restaurantStatus = restaurantStatus;
         this.restaurantCategory = restaurantCategory;
+    }
+
+    Restaurants(String restaurantName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public String getRestaurantName() {
@@ -114,6 +118,16 @@ public class Restaurants {
 
     public void setRestaurantRatings(int restaurantRatings) {
         this.restaurantRatings = restaurantRatings;
+    }
+
+    @Override
+    public void update(String availability) {
+        Mail theMail = Mail.getMailInstance();
+
+        String successMessage = "New items are added to the menu! "
+                + "Order now and get 20% off on your next order.";
+        
+        theMail.sendMail("doorstep", successMessage, restaurantEmail);
     }
     
     

@@ -5,12 +5,18 @@
  */
 package Model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Sachindra Rodrigo
  */
-public class Users {
+public class Users implements Observer {
     String firstName, lastName, email, password, address, dob, phone, role, profilePic;
+    
+    private String availability;
+
+    private ArrayList<Observer> observers = new ArrayList<Observer>();
 
     public Users(String firstName, String lastName, String email, String password, String address, String dob, String phone, String role, String profilePic) {
         this.firstName = firstName;
@@ -39,8 +45,6 @@ public class Users {
         this.profilePic = profilePic;
     }
     
-    
-
     public String getFirstName() {
         return firstName;
     }
@@ -111,6 +115,11 @@ public class Users {
 
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
+    }
+
+    @Override
+    public void update(String availability) {
+        
     }
     
     

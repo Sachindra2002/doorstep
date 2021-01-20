@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,7 +37,9 @@ public class ProxyAdministrator implements Administrator {
         try {
 
             //Get type of user
-            String type = (String) http_request.getSession().getAttribute("role") == null ? null : (String) http_request.getSession().getAttribute("role");
+            
+            String type = (String) http_request.getSession().getAttribute("role") == null ? null : 
+                    (String) http_request.getSession().getAttribute("role");
 
             if (type == null || !type.equals("admin")) {
 
