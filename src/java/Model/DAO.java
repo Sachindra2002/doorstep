@@ -77,11 +77,11 @@ public class DAO {
                 
                 if(email.equalsIgnoreCase(user.getEmail()) && password.equalsIgnoreCase(user.getPassword()) && role.equals("customer"))
                 {
-                    validatedUser = new Users(firstName, lastName, lastName, email, address, role, profilePic);
+                    validatedUser = new Users(firstName, lastName, lastName, email, phone, role, profilePic);
                     return validatedUser;
                 }else if(email.equalsIgnoreCase(user.getEmail()) && password.equalsIgnoreCase(user.getPassword()) && role.equals("admin"))
                 {
-                    validatedUser = new Users(firstName, lastName, lastName, email, address, role, profilePic);
+                    validatedUser = new Users(firstName, lastName, lastName, email, phone, role, profilePic);
                     return validatedUser;
                 }
             }

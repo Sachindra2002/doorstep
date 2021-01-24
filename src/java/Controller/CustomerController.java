@@ -5,6 +5,8 @@
  */
 package Controller;
 
+import Model.Adapter;
+import Model.AdapterInterface;
 import Model.AdminDAO;
 import Model.CashOnDeliveryStrategy;
 import Model.CreditCardStrategy;
@@ -12,7 +14,9 @@ import Model.PaypalStrategy;
 import Model.PaymentContext;
 import Model.DAO;
 import Model.DAOFactory;
+import Model.Inquiry;
 import Model.Items;
+import Model.Mail;
 import Model.Order;
 import Model.Order_Product;
 import Model.Restaurants;
@@ -71,6 +75,10 @@ public class CustomerController extends HttpServlet {
                 }
                 case "VIEWMENU":
                     viewRestaurantMenu(request, response);
+                    break;
+                    
+                case "ADDINQUIRY":
+                    inquire(request, response);
                     break;
             }
         } catch (SQLException ex) {
@@ -187,10 +195,28 @@ public class CustomerController extends HttpServlet {
         System.out.println(totalAmount);
         Date orderDate = new Date(System.currentTimeMillis());
         String orderStatus = "Pending";
+        
         Order theNewOrder = new Order(orderDate.toString(), orderStatus, orderMethod, email, totalAmount); //create a new order instance
         Order_Product theCart = new Order_Product(theNewOrder, customerCart);
+        
         UserDAO daoObj = DAOFactory.createDAO("customer");
         boolean isOrdered = ((customerDAO) daoObj).placeOrder(theCart);
+        Order madeOrder = ((customerDAO) daoObj).getOrder();
+        
+        String message = "Dear " + firstName + " " + lastName + ",\n\n" + "Your Order (" + madeOrder.getOrderID() + ") Has Been Placed Successfully!" + "\n\nTotal Amount Payable (LKR): " + String.valueOf(madeOrder.getTotalPrice()) + "\n\nOrder Type: " + madeOrder.getOrderType() + "\n\nBest Regards,\ndoorstep Team";
+
+            if (isOrdered) {
+                //if data has been inserted into database successfully, send a confirmation email
+                request.getRequestDispatcher("/orderSuccess.html").forward(request, response);
+                customerCart.clear();
+                totalPriceOfCart = 0;
+                Mail.getMailInstance().sendMail("Order Placed Successfully: " + madeOrder.getOrderID(), message, email);
+
+            } else {
+                //display an error message
+                out.println("<center><h2>Order Not Placed, Please Try Again</h2></center");
+                request.getRequestDispatcher("/customercart.jsp").include(request, response);
+            }
 
     }
 
@@ -221,10 +247,30 @@ public class CustomerController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("restaurantOrder.jsp");
         dispatcher.forward(request, response);
     }
-
+    
+    private void inquire(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        UserDAO daoObj = DAOFactory.createDAO("customer");
+        String number = (String) session.getAttribute("phone");
+        System.out.println(number);
+        String email = (String) session.getAttribute("email");
+        String message = request.getParameter("message");
+        AdapterInterface adpt = new Adapter();
+        String date = adpt.getDate();
+        String status = adpt.status();
+        Inquiry inquiry = new Inquiry(email, number, date, message, status); 
+        boolean isInquired = ((customerDAO) daoObj).addInquiry(inquiry);
+        if (isInquired) {
+            request.getRequestDispatcher("addedSuccess.html").include(request, response);//display success message
+        } else {
+            request.getRequestDispatcher("addednonsuccess.html").include(request, response);//display error message
+        }
+        
+    }
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 
 }

@@ -32,7 +32,7 @@
                 <a href="#">Your Orders</a>
                 <a href="${viewcart}">Your Cart</a>
                 <a href="#">Your Profile</a>
-                <a id="sidebarbottom" href="#">Contact Us</a>
+                <a id="sidebarbottom" href="inquiry.html">Contact Us</a>
                 <a  href="#">About Us</a>
             </div>
             <div id="main">

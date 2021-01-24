@@ -22,11 +22,15 @@
                 <img src="images/Capture3.PNG"  width="230">
             </div>
         </header>-->
+        <c:url var="viewcart" value="CustomerController">
+            <c:param name="command" value="VIEWCART"/>
+        </c:url>
         <div class="topnav" id="mytopnav">
             <div id="mySidebar" class="sidebar">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
                 <a href="#">Sign Out</a>
-                <a href="#">Your orders</a>
+                <a href="#">Your Orders</a>
+                <a href="${viewcart}">Your Cart</a>
                 <a href="#">Your Profile</a>
                 <a id="sidebarbottom" href="#">Contact Us</a>
                 <a  href="#">About Us</a>

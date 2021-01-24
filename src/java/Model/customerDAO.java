@@ -111,7 +111,7 @@ public class customerDAO implements UserDAO {
             Order theOrder = theCart.getTheOrder(); //retrieve objects from the cart object
             List<Items> productList = theCart.getProductList();
             //creating the order information in the database
-            PreparedStatement theOrderCreation = connection.prepareStatement("insert into orders(OrderDate,acceptedStatus,orderType,customerEmailAddress,totalPrice) values(?,?,?,?,?)");
+            PreparedStatement theOrderCreation = connection.prepareStatement("insert into orders(OrderDate,acceptedStatus,orderType,email,totalPrice) values(?,?,?,?,?)");
             theOrderCreation.setString(1, theOrder.getOrderDate());
             theOrderCreation.setString(2, theOrder.getAcceptedStatus());
             theOrderCreation.setString(3, theOrder.getOrderType());
@@ -143,7 +143,6 @@ public class customerDAO implements UserDAO {
                 insertOrder_Product.executeUpdate();
             }
 
-            updateProductAfterOrder(productList);
         } catch (Exception ex) {
             System.out.println("Error adding to order_product: " + ex);
         }
@@ -163,32 +162,54 @@ public class customerDAO implements UserDAO {
         }
         return null;
     }
-    
-    private void updateProductAfterOrder(List<Items> productList) {
-        //method used to set the quantity for the products after placing the order
+
+
+    public boolean addInquiry(Inquiry inquiry) {
         try {
-            for (Items product : productList) {
-                PreparedStatement prepObject1 = connection.prepareStatement("select quantity from product where productID=?");
-                prepObject1.setString(1, product.getItemId());
+            PreparedStatement ps = connection.prepareStatement("insert into inquiry(userID,phone, message, date, status) values(?, ?, ?, ?, ?)");
+            //creating an object of the PreparedStatement API and passing the sql INSERT query to it
+            ps.setString(1, inquiry.getUserId());//set values into the inquiry table
+            ps.setString(2, inquiry.getPhone());
+            ps.setString(3, inquiry.getMessage());
+            ps.setString(4, inquiry.getDate());
+            ps.setString(5, inquiry.getStatus());
+            ps.executeUpdate();//execute the above setString statements
+            return true; //when insertion is done, return true to the calling class
 
-                ResultSet rs = prepObject1.executeQuery();
-                while (rs.next()) {
-                    int quantity = rs.getInt("quantity");
-                    //update the quantity of the products stored in the product table
-                    int newQuantity = quantity - product.getItemQty();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+        
+    }
 
-                    PreparedStatement prepObject2 = connection.prepareStatement("update product set quantity = ? where productID=?");
-                    prepObject2.setInt(1, newQuantity);
-                    prepObject2.setString(2, product.getItemId());
+    public Order getOrder() {
+        try {
+            //method is used to generate an order inofrmation for a given order id
+            String orderID = getOrderID(); //method implemented to retrieve the newly inserted order id
 
-                    prepObject2.executeUpdate();
-                }
+            PreparedStatement theStatement = connection.prepareStatement("select * from orders where orderID=?");
+            theStatement.setString(1, orderID);
 
+            ResultSet theResult = theStatement.executeQuery();
+            while (theResult.next()) {
+                //access the content in the generated rows
+                String OrderID = theResult.getString("OrderID");
+                String OrderDate = theResult.getString("OrderDate");
+                String acceptedStatus = theResult.getString("acceptedStatus");
+                String orderReadyStatus = theResult.getString("orderReadyStatus");
+                String orderType = theResult.getString("orderType");
+                double totalPrice = Double.parseDouble(theResult.getString("totalPrice"));
+                String customerEmailAddress = theResult.getString("email");
+
+                Order theOrder = new Order(OrderID, OrderDate, acceptedStatus, orderReadyStatus, orderType, totalPrice, customerEmailAddress);
+                return theOrder; //create and return an order object
             }
 
         } catch (Exception ex) {
-            System.out.println("Error updating: " + ex);
+            System.out.println("Error retrieveing order: " + ex);
         }
+        return null;
     }
 
 
