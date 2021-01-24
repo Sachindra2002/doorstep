@@ -36,9 +36,16 @@ public class Items {
         this.itemPic = itemPic;
     }
 
-    public Items(String itemName, String category, String unitPrice, Restaurants restaurantObject) {
+    public Items(String itemName, String itemCategory, String itemPic, Double unitPrice, int itemQty, Restaurants restaurant, double totalPriceInCart) {
+        this.itemName = itemName;
+        this.itemCategory = itemCategory;
+        this.itemPic = itemPic;
+        this.unitPrice = unitPrice;
+        this.itemQty = itemQty;
+        this.restaurant = restaurant;
+        this.totalPriceInCart = totalPriceInCart;
     }
-
+    
     public Items(String itemId, String itemName, String itemCategory, Double unitPrice) {
         this.itemId = itemId;
         this.itemName = itemName;

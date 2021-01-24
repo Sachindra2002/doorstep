@@ -13,7 +13,8 @@
     </head>
     <body>
         <div class="container">
-            <form >
+            <form action="AdminController" method="GET">
+                <input type="hidden" name="command" value="ADDFOOD" 
                 <label for="itemName">Name of food</label>
                 <input type="text" name="itemName"  required />
                 <select name="category">

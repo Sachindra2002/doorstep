@@ -5,17 +5,30 @@
  */
 package Controller;
 
+import Model.AdminDAO;
+import Model.CashOnDeliveryStrategy;
+import Model.CreditCardStrategy;
+import Model.PaypalStrategy;
+import Model.PaymentContext;
 import Model.DAO;
 import Model.DAOFactory;
 import Model.Items;
-import Model.RestaurantDAO;
+import Model.Order;
+import Model.Order_Product;
+import Model.Restaurants;
 import Model.UserDAO;
 import Model.customerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,19 +47,34 @@ public class CustomerController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String command = request.getParameter("command");
-        if (command == null) { //if the variable retrieved is NULL
-            command = "VIEWALLPRODUCTS"; //assign it as "VIEW ALL PRODUCTS"
-        }
-        switch (command) {
-            case "ADDTOCART": {
-                addToCart(request, response);
-                break;
+        try {
+            String command = request.getParameter("command");
+            if (command == null) { //if the variable retrieved is NULL
+                command = "HOMEPAGE"; //assign it as "VIEW ALL PRODUCTS"
             }
-            case "VIEWCART": {
-                viewcart(request, response);
-                break;
+            switch (command) {
+                case "HOMEPAGE": {
+                    CustomerHome(request, response);
+                    break;
+                }
+                case "ADDTOCART": {
+                    addToCart(request, response);
+                    break;
+                }
+                case "VIEWCART": {
+                    viewcart(request, response);
+                    break;
+                }
+                case "PROCEED": {
+                    proceedCart(request, response);
+                    break;
+                }
+                case "VIEWMENU":
+                    viewRestaurantMenu(request, response);
+                    break;
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -55,9 +83,20 @@ public class CustomerController extends HttpServlet {
             throws ServletException, IOException {
     }
 
-    private void addToCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void addToCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        HttpSession session = request.getSession();
         boolean isPresent = false;
         String productID = request.getParameter("itemID"); //retrieve the id of the product from the jsp page
+        String restaurantName = request.getParameter("restaurantName");
+        String restaurantAddress = request.getParameter("restaurantAddress");
+        String restaurantPhone = request.getParameter("restaurantPhone");
+        String restaurantStatus = request.getParameter("restaurantStatus");
+        String restaurantPic = request.getParameter("restaurantPic");
+        session.setAttribute("restaurantName", restaurantName);
+        session.setAttribute("restaurantAddress", restaurantAddress);
+        session.setAttribute("restaurantPhone", restaurantPhone);
+        session.setAttribute("restaurantStatus", restaurantStatus);
+        session.setAttribute("restaurantPic", restaurantPic);
         UserDAO daoObj = DAOFactory.createDAO("customer");
         for (Items p : customerCart) {
             //iterate through the cart to see if the product is already present
@@ -84,17 +123,16 @@ public class CustomerController extends HttpServlet {
                 //if the product is retrieve successfully, add the product to the list 
                 theProduct.setTotalPriceInCart(theProduct.getUnitPrice()); //if its first product, total price == unit price
                 customerCart.add(theProduct);
-                response.sendRedirect("CustomerHomeController"); //redirect user to the customer home page
+                viewRestaurantMenu(request, response); //redirect user to the customer home page
             }
         } else {
-            response.sendRedirect("CustomerHomeController"); //if product exists and quantity is incremented, send to home page again
+            viewRestaurantMenu(request, response); //if product exists and quantity is incremented, send to home page again
         }
     }
 
     private void viewcart(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession theSession = request.getSession(false);//retrieve the existing session
-
 
             totalPriceOfCart = 0;
 
@@ -120,6 +158,68 @@ public class CustomerController extends HttpServlet {
         } catch (Exception ex) {
             System.out.println("Error in servlet:" + ex);
         }
+    }
+
+    private void proceedCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        double Totalamount;
+        HttpSession session = request.getSession();
+        String firstName = (String) session.getAttribute("firstName");
+        String lastName = (String) session.getAttribute("lastName");
+        String email = (String) session.getAttribute("email");
+        String orderMethod = request.getParameter("paymentType");
+        System.out.println(orderMethod);
+        double amount = Double.parseDouble(request.getParameter("totalCartAmount"));
+        System.out.println(amount);
+        PaymentContext ctx = null;
+        ctx = new PaymentContext();
+
+        if ("Credit Card".equalsIgnoreCase(orderMethod)) {
+            ctx.setPaymentStrategy(new CreditCardStrategy());
+        }
+        if ("PayPal".equalsIgnoreCase(orderMethod)) {
+            ctx.setPaymentStrategy(new PaypalStrategy());
+        }
+        if ("Cash On Delivery".equalsIgnoreCase(orderMethod)) {
+            ctx.setPaymentStrategy(new CashOnDeliveryStrategy());
+        }
+        System.out.println("Payment context has " + ctx.getPaymentStrategy());
+        double totalAmount = ctx.pay(amount);
+        System.out.println(totalAmount);
+        Date orderDate = new Date(System.currentTimeMillis());
+        String orderStatus = "Pending";
+        Order theNewOrder = new Order(orderDate.toString(), orderStatus, orderMethod, email, totalAmount); //create a new order instance
+        Order_Product theCart = new Order_Product(theNewOrder, customerCart);
+        UserDAO daoObj = DAOFactory.createDAO("customer");
+        boolean isOrdered = ((customerDAO) daoObj).placeOrder(theCart);
+
+    }
+
+    private void CustomerHome(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        DAO dao = new DAO();
+        List<Restaurants> popularRestaurants = new ArrayList<>();
+        List<Restaurants> srilankanRestaurants = new ArrayList<>();
+        popularRestaurants = dao.getPopularRestaurants();
+        srilankanRestaurants = dao.getSrilankanRestaurants();
+        request.setAttribute("RESTAURANT_LIST", popularRestaurants);
+        request.setAttribute("SRILANKAN_LIST", srilankanRestaurants);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("customerHome.jsp");
+        dispatcher.forward(request, response);
+
+    }
+
+    private void viewRestaurantMenu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        HttpSession session = request.getSession();
+        String restaurantName = request.getParameter("restaurantName");
+        DAO dao = new DAO();
+        if ("".equals(restaurantName)) {
+            restaurantName = (String) session.getAttribute("restaurantName");
+        }
+        List<Items> menuItems = new ArrayList<>();
+        menuItems = dao.getMenuItems(restaurantName);
+        request.setAttribute("MENU_LIST", menuItems);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("restaurantOrder.jsp");
+        dispatcher.forward(request, response);
     }
 
     @Override

@@ -15,8 +15,6 @@ public class DAOFactory {
     public static UserDAO createDAO(String role) {
         if ("admin".equals(role)) {
             daoObject = new AdminDAO();
-        } else if ("Restaurant".equals(role)) {
-            daoObject = new RestaurantDAO();
         }else if("customer".equals(role))
         {
             daoObject = new customerDAO();

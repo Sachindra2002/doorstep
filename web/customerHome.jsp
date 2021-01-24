@@ -60,7 +60,7 @@
         <h2 class="topic">Popular Near You</h2>
         <div class="Popular">
             <c:forEach var="restaurant" items="${RESTAURANT_LIST}">
-                <c:url var="orderAction" value="OrderController">
+                <c:url var="orderAction" value="CustomerController">
                     <c:param name="command" value="VIEWMENU"/>
                     <c:param name="restaurantPic" value="${restaurant.restaurantPic}"/>
                     <c:param name="restaurantName" value="${restaurant.restaurantName}"/>
@@ -82,7 +82,7 @@
         <h2 class="topic">Sri-Lankan Culture</h2>
         <div class="srilankan">
             <c:forEach var="srilankan" items="${SRILANKAN_LIST}">
-                <c:url var="orderAction" value="OrderController">
+                <c:url var="orderAction" value="CustomerController">
                     <c:param name="command" value="VIEWMENU"/>
                     <c:param name="restaurantPic" value="${srilankan.restaurantPic}"/>
                     <c:param name="restaurantName" value="${srilankan.restaurantName}"/>

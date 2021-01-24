@@ -51,8 +51,8 @@
         </div>
         <div class="Cartcontainer">
             <h1 class="maintopic">Minimum Cart Value - LKR 3000</h1>
-            <form action="CustomerController" method="POST">
-                <input type="hidden" name="COMMAND" value="FinalizeCart">
+            <form action="CustomerController" method="GET">
+                <input type="hidden" name="command" value="PROCEED">
 
                 <p class="labels">Total Amount Payable (LKR) -:</p>
 
@@ -61,7 +61,8 @@
                  <p class="labels">Payment Type</p>
                 <div class="centerin"><select class="inputBox" name="paymentType">
                         <option name="creditcard">Credit Card</option>
-                        <option name="ondelivery">Cash On delivery</option>
+                        <option name="paypal">PayPal</option>
+                        <option name="cashdelivery">Cash On Delivery</option>
                     </select></div>
                 <div class="centerin"><input type="submit" id="order" class="button" value="Place Order" onclick="checkCart()"></div>
 

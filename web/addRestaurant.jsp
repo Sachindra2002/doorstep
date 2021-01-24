@@ -14,14 +14,15 @@
     <body>
         <div class="container">
             <div id="sign-up-form">
-                <form id="form" action="AddRestaurantController" method="POST" enctype="multipart/form-data">
+                <form id="form" action="AdminController" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="command" value="ADDRESTAURANT">
                     <div class="profile-pic-div">
                         <img src="images/avatar.png" id="previewPhoto">
                         <input type="file" id="file" name="photo" size="50" />
                         <label for="file" id="uploadBtn">Choose Photo</label>
                     </div>                    
-                    <label for="retaurantName">Restaurant Name</label>
-                    <input type="text" name="retaurantName"  required />
+                    <label for="restaurantName">Restaurant Name</label>
+                    <input type="text" name="restaurantName"required />
                     <select name="category">
                         <option value="srilankan">Sri-Lankan</option>
                         <option value="indian">Indian</option>
@@ -31,18 +32,17 @@
                         <option value="chinese">Chinese</option>
                         <option value="bakery">Bakery</option>
                     </select>
-                    <label for="restaurantemail">Restaurant Email</label>
+                    <label for="restaurantEmail">Restaurant Email</label>
                     <input type="email" name="restaurantemail"  required />
                     <span id="text"></span>
                     <label for="phone">Restaurant Phone</label>
-                    <input type="number" name="phone" maxlength="10" required>
+                    <input  name="phone" maxlength="10" required>
+                    <select name="city">
+                        <option value="srilankan">Colombo</option>
+                        <option value="indian">Negombo</option>
+                    </select>
                     <label for="restaurantaddress">Restaurant Address</label>
                     <input type="text" name="restaurantaddress"  required />
-                    <label for="password">Password</label>
-                    <input id="password" type="password" name="password"  required onkeyup="checkPass();">
-                    <label for="password0">Re-Enter Password</label>                    
-                    <input id="password0" type="password" name="password0"  required onkeyup="checkPass();">
-                    <span id="confirm-message2" class="confirm-message"></span>
                     <input type="submit" class="button" name="submit" value="Create Restaurant">
                 </form>
             </div>

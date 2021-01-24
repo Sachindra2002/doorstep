@@ -48,7 +48,7 @@ public class loginController extends HttpServlet {
                         session.setAttribute("phone", authenticatedUser.getPhone());
                         session.setAttribute("address", authenticatedUser.getAddress());
                         session.setAttribute("profilePic", authenticatedUser.getProfilePic());
-                        response.sendRedirect("RedirectingController");
+                        response.sendRedirect("AdminController");
                         break;
                     }
                     case "customer": {
@@ -57,7 +57,7 @@ public class loginController extends HttpServlet {
                         session.setAttribute("role", authenticatedUser.getRole());
                         session.setAttribute("firstName", authenticatedUser.getFirstName());
                         session.setAttribute("lastName", authenticatedUser.getLastName());
-                        response.sendRedirect("RedirectingController");
+                        response.sendRedirect("CustomerController");
                         break;
                     }
                 }

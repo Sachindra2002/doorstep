@@ -5,15 +5,18 @@
  */
 package Model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Sachindra Rodrigo
  */
-public class Restaurants implements Observer {
+public class Restaurants implements Subject {
+    private ArrayList<Observer> observers = new ArrayList<Observer>();
     String restaurantName, restaurantPic, restaurantPhone, restaurantEmail, restaurantAddress, restaurantStatus, restaurantCategory, restaurantCity, password;
     int restaurantRatings;
 
-    public Restaurants(String restuarantName, String restaurantPic, String restaurantPhone, String restaurantEmail, String restaurantAddress, String restaurantStatus, String restaurantCategory, String restaurantCity, String password, int restaurantRatings) {
+    public Restaurants(String restaurantName, String restaurantPic, String restaurantPhone, String restaurantEmail, String restaurantAddress, String restaurantStatus, String restaurantCategory, String restaurantCity, String password, int restaurantRatings) {
         this.restaurantName = restaurantName;
         this.restaurantPic = restaurantPic;
         this.restaurantPhone = restaurantPhone;
@@ -35,11 +38,14 @@ public class Restaurants implements Observer {
         this.restaurantStatus = restaurantStatus;
         this.restaurantCategory = restaurantCategory;
     }
-
-    Restaurants(String restaurantName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Observer> getObservers()
+    {
+        return observers;
     }
-    
+    public Restaurants(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
     public String getRestaurantName() {
         return restaurantName;
     }
@@ -86,6 +92,7 @@ public class Restaurants implements Observer {
 
     public void setRestaurantStatus(String restaurantStatus) {
         this.restaurantStatus = restaurantStatus;
+        notifyObservers();
     }
 
     public String getRestaurantCategory() {
@@ -121,13 +128,22 @@ public class Restaurants implements Observer {
     }
 
     @Override
-    public void update(String availability) {
-        Mail theMail = Mail.getMailInstance();
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
 
-        String successMessage = "New items are added to the menu! "
-                + "Order now and get 20% off on your next order.";
-        
-        theMail.sendMail("doorstep", successMessage, restaurantEmail);
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        System.out.println("Restaurant name"+ this.getRestaurantName()+ "Is now available in negombo");
+        for (Observer observer : observers)
+        {
+            observer.update(this.restaurantStatus);
+        }
     }
     
     

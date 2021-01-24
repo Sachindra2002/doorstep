@@ -57,8 +57,13 @@
         <div class="menu">
             <c:forEach var="items" items="${MENU_LIST}">
                 <c:url var="addCart" value="CustomerController">
-                    <c:param name="itemID" value="${items.itemId}"/>
                     <c:param name="command" value="ADDTOCART"/>
+                    <c:param name="itemID" value="${items.itemId}"/>
+                    <c:param name="restaurantName" value='<%=request.getParameter("restaurantName")%>'/> 
+                    <c:param name="restaurantAddress" value='<%=request.getParameter("restaurantAddress")%>'/> 
+                    <c:param name="restaurantPhone" value='<%=request.getParameter("restaurantPhone")%>'/>
+                    <c:param name="restaurantStatus" value='<%=request.getParameter("restaurantStatus")%>'/>
+                    <c:param name="restaurantPic" value='<%=request.getParameter("restaurantPic")%>'/>
                 </c:url>
                 <a href="${addCart}">
                 <div class="menuItem">

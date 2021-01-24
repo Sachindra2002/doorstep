@@ -24,22 +24,47 @@ public class AdminDAO implements UserDAO {
         connection = Database_Connection.connectToDatabase();
     }
 
-
-    @Override
-    public void update(String username, String message) {
-        ArrayList<Users> customerList = getAllCustomers();
-        //initializing an arraylist of customers and catching the return from the getAllCustomer method in it
-        Mail theMail = Mail.getMailInstance();
-        //Creating an object  of the MailClass
-        for (int i = 0; i < customerList.size(); i++) {
-            theMail.sendMail("TurnOut", message, customerList.get(i).getEmail());
-            //sending the mail to every customers in the array list
-        }
-    }
-
     private ArrayList<Users> getAllCustomers() {
         return null;
     }
+
+    public boolean addItem(Items item) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(" insert into menu (itemName,itemCategory,unitPrice,itemQty,totalPrice,restaurant, itemPic)" + " values (?,?,?,?,?,?,?)");
+            ps.setString(1, item.getItemName());
+            ps.setString(2, item.getItemCategory());
+            ps.setDouble(3, item.getUnitPrice());
+            ps.setInt(4, item.getItemQty());
+            ps.setDouble(5, item.getTotalPriceInCart());
+            ps.setObject(6, item.getRestaurant().getRestaurantName());
+            ps.setString(7, item.getItemPic());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean addRestaurant(Restaurants restaurant) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(" insert into restaurants (restaurantName,restaurantPic,restaurantPhone,restaurantEmail,restaurantAddress,restaurantStatus, category,city,ratings,password)" + " values (?,?,?,?,?,?,?,?,?,?)");
+            ps.setString(1, restaurant.getRestaurantName());
+            ps.setString(2, restaurant.getRestaurantPic());
+            ps.setString(3, restaurant.getRestaurantPhone());
+            ps.setString(4, restaurant.getRestaurantEmail());
+            ps.setString(5, restaurant.getRestaurantAddress());
+            ps.setString(6, restaurant.getRestaurantStatus());
+            ps.setString(7, restaurant.getRestaurantCategory());
+            ps.setString(8, restaurant.getRestaurantCity());
+            ps.setInt(9, restaurant.getRestaurantRatings());
+            ps.setString(10, restaurant.getPassword());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 
     
 }

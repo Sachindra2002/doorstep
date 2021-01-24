@@ -9,8 +9,8 @@ package Model;
  *
  * @author Sachindra Rodrigo
  */
-public interface Observer {
+public interface PaymentStrategy {
     
-    public abstract void update(String availability);    
-
+    public double pay(double amount);
+    
 }

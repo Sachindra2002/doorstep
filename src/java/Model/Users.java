@@ -11,13 +11,15 @@ import java.util.ArrayList;
  *
  * @author Sachindra Rodrigo
  */
-public class Users implements Observer {
+public class Users implements Observer{
     String firstName, lastName, email, password, address, dob, phone, role, profilePic;
     
-    private String availability;
-
-    private ArrayList<Observer> observers = new ArrayList<Observer>();
-
+    public Users(String email, Subject subject)
+    {
+        this.email = email;
+        subject.registerObserver(this);
+    }
+    
     public Users(String firstName, String lastName, String email, String password, String address, String dob, String phone, String role, String profilePic) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -119,8 +121,7 @@ public class Users implements Observer {
 
     @Override
     public void update(String availability) {
-        
+        System.out.println("hello"+firstName+"product is now"+availability);
     }
-    
-    
+
 }

@@ -5,8 +5,13 @@
  */
 package Controller;
 
+import Model.AdminDAO;
 import Model.DAO;
+import Model.DAOFactory;
+import static Model.DAOFactory.daoObject;
+import Model.UserDAO;
 import Model.Users;
+import Model.customerDAO;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,59 +45,22 @@ public class RegisterServlet extends HttpServlet {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
-        String dob = request.getParameter("dob");
+        String dob = request.getParameter("date");
         String phone = request.getParameter("phone");
         String Address = request.getParameter("address");
         String password = request.getParameter("password");
-        Part filePart = request.getPart("photo");
         String role = "customer";
-        if (dao.checkUserExists(email)) {
-            
-            RequestDispatcher rs = request.getRequestDispatcher("registerError1.html");
-            rs.forward(request, response);
+        String profilepic = "empty";
+         UserDAO daoObj = DAOFactory.createDAO("customer");
+         boolean isUserExist = ((customerDAO) daoObject).checkUserExist(email);
+         if (isUserExist) {
+            request.getRequestDispatcher("successRegister.jsp").include(request, response);//display success message
         } else {
-            String fileName = null;
-            String photo = "";
-            String path = "D:\\doorstep\\web\\profileImages";
-            File file = new File(path);
-            file.mkdir();
-            //String fileName = getFileName(filePart);
-            if (filePart == null)
-            {
-                fileName = null;
-            }
-            else
-            {
-                fileName = email + ".jpg";
-            }
-            
-            OutputStream out = null;
-            InputStream filecontent = null;
-            
-            PrintWriter writer = response.getWriter();
-            try {
-                
-                out = new FileOutputStream(new File(path + File.separator + fileName));
-                
-                filecontent = filePart.getInputStream();
-                
-                int read = 0;
-                final byte[] bytes = new byte[1024];
-                
-                while ((read = filecontent.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                    //photo = path + "\\" + fileName;
-                    photo = "ProfileImages\\" + fileName;
-                }
-                
-            } catch (Exception e) {
-                
-            }
-            
-            Users user = new Users(firstName, lastName, email,password, Address, dob, phone, role, photo);
-            dao.addUser(user);
-            response.sendRedirect("registerSuccess.html");
+             Users user = new Users(firstName, lastName, email, password, Address, dob, phone,role, profilepic);
+             ((customerDAO) daoObject).addUser(user);
+             response.sendRedirect("success.html");
         }
+
     }
 
     @Override

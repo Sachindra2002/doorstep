@@ -48,6 +48,18 @@
         <servlet-name>CustomerController</servlet-name>
         <servlet-class>Controller.CustomerController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserController</servlet-name>
+        <servlet-class>Controller.UserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RestaurantLogin</servlet-name>
+        <servlet-class>Controller.RestaurantLogin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminController</servlet-name>
+        <servlet-class>Controller.AdminController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VisitorController</servlet-name>
         <url-pattern>/VisitorController</url-pattern>
@@ -109,6 +121,18 @@
     <servlet-mapping>
         <servlet-name>CustomerController</servlet-name>
         <url-pattern>/CustomerController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/UserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RestaurantLogin</servlet-name>
+        <url-pattern>/RestaurantLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminController</servlet-name>
+        <url-pattern>/AdminController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

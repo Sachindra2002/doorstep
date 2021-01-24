@@ -10,6 +10,5 @@ package Model;
  * @author Sachindra Rodrigo
  */
 public interface UserDAO {
-    public void update(String username, String message);
-    
+
 }
