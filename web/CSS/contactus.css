@@ -4,9 +4,34 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
-    Created on : Jan 10, 2021, 8:56:00 PM
+    Created on : Jan 25, 2021, 6:16:22 PM
     Author     : Sachindra Rodrigo
 */
+
+.message{
+    width: 600px;
+    height: 200px;
+}
+.texts{
+    text-align: center;
+    margin-top: 80px;
+}
+h1{
+    text-align: center;
+    margin-top: 100px;
+}
+body{
+    font-family: sans-serif;
+}
+.button{
+    background-color: limegreen;
+    border: none;
+    width: 200px;
+    height: 50px;
+    margin-top: 20px;
+    text-align: center;
+    margin-left: 650px;
+}
 
 body{
     font-family: sans-serif;
@@ -150,53 +175,4 @@ html {
 }
 .topic{
     margin-left: 150px;
-}
-.Popular{
-    margin-left: 150px;
-    margin-right: 80px;
-    height: 320px;
-    overflow: auto;
-}
-.restaurantName{
-    margin-left: 75px;
-    margin-top: 5px;
-    font-size: 20px;
-    margin-bottom: 8px;
-}
-.dummy{
-    height: 100px;
-}
-.category{
-    margin-bottom: 5px;    
-}
-.status{
-    margin-bottom: 5px;
-}
-.order{
-    margin-left: 75px;  
-    margin-top: 15px;
-    font-size: 20px;
-}
-.order a{
-    text-decoration: none;
-    color: limegreen;
-    margin-top: 5px;
-}
-.order a:hover{
-    border-bottom: 3px solid limegreen;
-    transition: 0.1s;
-}
-.restaurantBox{
-    width: 280px;
-    float: left;
-    margin-right: 10px;
-}
-.restaurantBox:hover{
-    cursor: pointer;
-}
-.srilankan{
-    margin-left: 150px;
-    margin-right: 80px;
-    height: 320px;
-    overflow: auto;
 }

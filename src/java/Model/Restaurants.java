@@ -11,8 +11,7 @@ import java.util.ArrayList;
  *
  * @author Sachindra Rodrigo
  */
-public class Restaurants implements Subject {
-    private ArrayList<Observer> observers = new ArrayList<Observer>();
+public class Restaurants {
     String restaurantName, restaurantPic, restaurantPhone, restaurantEmail, restaurantAddress, restaurantStatus, restaurantCategory, restaurantCity, password;
     int restaurantRatings;
 
@@ -37,10 +36,6 @@ public class Restaurants implements Subject {
         this.restaurantAddress = restaurantAddress;
         this.restaurantStatus = restaurantStatus;
         this.restaurantCategory = restaurantCategory;
-    }
-    public ArrayList<Observer> getObservers()
-    {
-        return observers;
     }
     public Restaurants(String restaurantName) {
         this.restaurantName = restaurantName;
@@ -92,7 +87,6 @@ public class Restaurants implements Subject {
 
     public void setRestaurantStatus(String restaurantStatus) {
         this.restaurantStatus = restaurantStatus;
-        notifyObservers();
     }
 
     public String getRestaurantCategory() {
@@ -126,26 +120,5 @@ public class Restaurants implements Subject {
     public void setRestaurantRatings(int restaurantRatings) {
         this.restaurantRatings = restaurantRatings;
     }
-
-    @Override
-    public void registerObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        System.out.println("Restaurant name"+ this.getRestaurantName()+ "Is now available in negombo");
-        for (Observer observer : observers)
-        {
-            observer.update(this.restaurantStatus);
-        }
-    }
-    
-    
     
 }

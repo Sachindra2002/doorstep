@@ -5,12 +5,13 @@
  */
 package Model;
 
+import java.util.List;
+
 /**
  *
  * @author Sachindra Rodrigo
  */
-public interface Observer {
+public interface StrategySort {
+     public List <Order> SortOrderDate();
     
-    public abstract void update(String availability);    
-
 }

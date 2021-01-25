@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+<%-- 
+    Document   : addednonsuccess
+    Created on : Jan 25, 2021, 6:50:38 PM
+    Author     : Sachindra Rodrigo
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -35,7 +35,7 @@ and open the template in the editor.
             <a href="${allorders}">Your Orders</a>
             <a href="${viewcart}">Your Cart</a>
             <a href="#">Your Profile</a>
-            <a id="sidebarbottom" href="inquiry.html">Contact Us</a>
+            <a id="sidebarbottom" href="inquiry.jsp">Contact Us</a>
             <a  href="#">About Us</a>
         </div>
         <div id="main">
@@ -53,7 +53,7 @@ and open the template in the editor.
             </div>
         </div>
     </div>
-    <h2 class="topic" style="margin-top: 100px; margin-left: 700px">Cart Empty!</h2>
+    <h2 class="topic" style="margin-top: 300px; margin-left: 600px">Inquiry Could not be Submitted</h2>
     <script>
         function openNav() {
             document.getElementById("mySidebar").style.width = "250px";

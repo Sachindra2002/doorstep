@@ -12,12 +12,27 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <div class="centerHeader">
+            <a href="AdminController"><img src="Images/Capture3.PNG"  width="230"></a>
+            <link type="text/css" rel="stylesheet" href="CSS/addFoodToMenu.css">
+        </div>
+        <h1 style="text-align: center; margin-top: 50px;">Add Food To Restaurant Menu</h1>
         <div class="container">
             <form action="AdminController" method="GET">
-                <input type="hidden" name="command" value="ADDFOOD" 
+                <input type="hidden" name="command" value="ADDFOOD"/>
+                 <label for="itemName">Select Restaurant to add food</label>
+                <select name="restaurant" style="margin-left: 200px; font-size: 20px;">
+                    <option value="Burger Hut">Burger Hut</option>
+                    <option value="Curry Pot">Curry Pot</option>
+                    <option value="La Pizzeria">La Pizzeria</option>
+                    <option value="O.F.C">O.F.C</option>
+                    <option value="Banana Leaf">Banana Leaf</option>
+                    <option value="Hoppers">Hoppers</option>
+                </select>
                 <label for="itemName">Name of food</label>
                 <input type="text" name="itemName"  required />
-                <select name="category">
+                <label for="itemName">Select Category of item</label>
+                <select name="category" style="margin-left: 200px; font-size: 20px;">
                     <option value="srilankan">Sri-Lankan</option>
                     <option value="indian">Indian</option>
                     <option value="italian">Italian</option>

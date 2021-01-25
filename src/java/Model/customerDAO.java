@@ -8,6 +8,7 @@ package Model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,9 @@ import java.util.List;
  * @author Sachindra Rodrigo
  */
 public class customerDAO implements UserDAO {
+
     private final Connection connection;
+
     public customerDAO() {
         //Get the singleton database_connection by using the static method
         Database Database_Connection = Database.getDBConnection();
@@ -46,8 +49,7 @@ public class customerDAO implements UserDAO {
             System.out.println("Error retrieving from database: " + ex);
         }
         return null;
-        
-        
+
     }
 
     public boolean checkUserExist(String email) {
@@ -82,25 +84,20 @@ public class customerDAO implements UserDAO {
     }
 
     public boolean verifyCard(String cardnumber, String cvv, String email) {
-        try
-        {
+        try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM payments");
             ResultSet rs = statement.executeQuery();
-            while(rs.next())
-            {
+            while (rs.next()) {
                 String Email = rs.getString("userID");
                 String CardNumber = rs.getString("cardnumber");
-                String Cvv = rs.getString("cvv");                
-                if(Email.equalsIgnoreCase(email) && CardNumber.equalsIgnoreCase(cardnumber) && Cvv.equals(cvv))
-                {
+                String Cvv = rs.getString("cvv");
+                if (Email.equalsIgnoreCase(email) && CardNumber.equalsIgnoreCase(cardnumber) && Cvv.equals(cvv)) {
                     return true;
-                }else
-                {
+                } else {
                     return false;
                 }
             }
-        }catch (Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println("Error Authenticating card: " + ex);
         }
         return false;
@@ -127,7 +124,7 @@ public class customerDAO implements UserDAO {
         }
         return false;
     }
-    
+
     private void addToOrderProduct(List<Items> productList) {
         //method used to fill the products purchased for each order
         try {
@@ -147,7 +144,7 @@ public class customerDAO implements UserDAO {
             System.out.println("Error adding to order_product: " + ex);
         }
     }
-    
+
     private String getOrderID() {
         try {
             PreparedStatement theStatement = connection.prepareStatement("select orderID from orders ORDER BY orderID DESC Limit 1"); //get the last inserted order id
@@ -162,7 +159,6 @@ public class customerDAO implements UserDAO {
         }
         return null;
     }
-
 
     public boolean addInquiry(Inquiry inquiry) {
         try {
@@ -180,7 +176,7 @@ public class customerDAO implements UserDAO {
             e.printStackTrace();
         }
         return false;
-        
+
     }
 
     public Order getOrder() {
@@ -212,6 +208,52 @@ public class customerDAO implements UserDAO {
         return null;
     }
 
+    public ArrayList<Order> vieworder(String email) {
+        ArrayList<Order> orderIDList = new ArrayList();
+        try {
+            PreparedStatement ps = connection.prepareStatement("select * from orders where email = ? order by OrderID DESC");
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
 
-    
+            while (rs.next()) {
+                String orderID = rs.getString("OrderID");
+                String orderDate = rs.getString("OrderDate");
+                String acceptedStatus = rs.getString("acceptedStatus");
+                String orderReadyStatus = rs.getString("orderReadyStatus");
+                String orderType = rs.getString("orderType");
+                Double totalPrice = Double.parseDouble(rs.getString("totalPrice"));
+                Order orderObject = new Order(orderID, orderDate, acceptedStatus, orderReadyStatus, orderType, totalPrice);
+                orderIDList.add(orderObject);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error " + e);
+        }
+        return orderIDList;
+    }
+
+    public ArrayList<Items> viewAllOrderItems(String orderID) {
+        ArrayList<Items> productList = new ArrayList();
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT order_product.ProductID, menu.itemCategory, menu.itemName, menu.unitPrice, order_product.quantityOfProduct FROM order_product INNER JOIN menu ON menu.itemId=order_product.ProductID where order_product.OrderID = ?");
+            ps.setString(1, orderID);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String productID = rs.getString("productID");
+                String productType = rs.getString("itemCategory");
+                String productName = rs.getString("itemName");
+                double unitPrice = Double.parseDouble(rs.getString("unitPrice"));
+                int quantity = Integer.parseInt(rs.getString("quantityOfProduct"));
+                double productPrice = quantity * unitPrice;
+
+                Items theProduct = new Items(productID, productType, productName, unitPrice, quantity, productPrice);
+                productList.add(theProduct);
+            }
+        } catch (Exception e) {
+            System.out.println("Error : " + e);
+        }
+        return productList;
+    }
+
 }

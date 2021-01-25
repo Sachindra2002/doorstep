@@ -7,6 +7,7 @@ package Model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 /**
@@ -63,6 +64,31 @@ public class AdminDAO implements UserDAO {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public ArrayList<Order> getAllOrders() {
+        ArrayList<Order> orderIDList = new ArrayList();
+        try {
+            PreparedStatement ps = connection.prepareStatement("select * from orders where acceptedStatus = ?");
+            ps.setString(1, "Pending");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String orderID = rs.getString("OrderID");
+                String orderDate = rs.getString("OrderDate");
+                String orderType = rs.getString("orderType");
+                Double totalPrice = Double.parseDouble(rs.getString("totalPrice"));
+                String customerEmailAddress = rs.getString("email");
+
+                Order orderObject = new Order(orderID, orderDate, orderType, totalPrice, customerEmailAddress);
+
+                orderIDList.add(orderObject);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error " + e);
+        }
+        return orderIDList;
     }
 
 

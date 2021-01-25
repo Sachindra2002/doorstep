@@ -28,6 +28,7 @@ import static java.lang.System.out;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -76,9 +77,29 @@ public class CustomerController extends HttpServlet {
                 case "VIEWMENU":
                     viewRestaurantMenu(request, response);
                     break;
-                    
+
                 case "ADDINQUIRY":
                     inquire(request, response);
+                    break;
+
+                case "ORDERS":
+                    orders(request, response);
+                    break;
+
+                case "FULLORDER":
+                    viewFullOrder(request, response);
+                    break;
+
+                case "REMOVEITEM":
+                    removeItemCart(request, response);
+                    break;
+
+                case "MINUSONE":
+                    reduceOneFromCart(request, response);
+                    break;
+
+                case "ADDONE":
+                    addOneFromCart(request, response);
                     break;
             }
         } catch (SQLException ex) {
@@ -125,8 +146,7 @@ public class CustomerController extends HttpServlet {
             //retrieve the product information from the database
             if (theProduct == null) {
                 //check if the return object is equal to null
-                out.println("<center><h2>Error Adding To Card</h2></center>"); //if null, display an error message on the customer home page
-                request.getRequestDispatcher("/customerHomePage.jsp").include(request, response);
+                CustomerHome(request, response);
             } else {
                 //if the product is retrieve successfully, add the product to the list 
                 theProduct.setTotalPriceInCart(theProduct.getUnitPrice()); //if its first product, total price == unit price
@@ -146,9 +166,8 @@ public class CustomerController extends HttpServlet {
 
             if (customerCart.isEmpty()) {
                 //if cart is empty, display message on the customer cart page
-                out.println("<center><h2>Cart is Currently Empty. Add Items To Your Cart To View Them</h2></center>");
                 request.setAttribute("totalPriceOfCart", totalPriceOfCart); //attach the total price to request scope
-                request.getRequestDispatcher("/carterror.html").include(request, response);
+                request.getRequestDispatcher("/carterror.jsp").include(request, response);
 
             } else {
                 for (Items theProduct : customerCart) {
@@ -193,30 +212,32 @@ public class CustomerController extends HttpServlet {
         System.out.println("Payment context has " + ctx.getPaymentStrategy());
         double totalAmount = ctx.pay(amount);
         System.out.println(totalAmount);
-        Date orderDate = new Date(System.currentTimeMillis());
+        AdapterInterface adpt = new Adapter();
+        String orderDate = adpt.getDate();
+        //Date orderDate = new Date(System.currentTimeMillis());
         String orderStatus = "Pending";
-        
+
         Order theNewOrder = new Order(orderDate.toString(), orderStatus, orderMethod, email, totalAmount); //create a new order instance
         Order_Product theCart = new Order_Product(theNewOrder, customerCart);
-        
+
         UserDAO daoObj = DAOFactory.createDAO("customer");
         boolean isOrdered = ((customerDAO) daoObj).placeOrder(theCart);
         Order madeOrder = ((customerDAO) daoObj).getOrder();
-        
+
         String message = "Dear " + firstName + " " + lastName + ",\n\n" + "Your Order (" + madeOrder.getOrderID() + ") Has Been Placed Successfully!" + "\n\nTotal Amount Payable (LKR): " + String.valueOf(madeOrder.getTotalPrice()) + "\n\nOrder Type: " + madeOrder.getOrderType() + "\n\nBest Regards,\ndoorstep Team";
 
-            if (isOrdered) {
-                //if data has been inserted into database successfully, send a confirmation email
-                request.getRequestDispatcher("/orderSuccess.html").forward(request, response);
-                customerCart.clear();
-                totalPriceOfCart = 0;
-                Mail.getMailInstance().sendMail("Order Placed Successfully: " + madeOrder.getOrderID(), message, email);
+        if (isOrdered) {
+            //if data has been inserted into database successfully, send a confirmation email
+            request.getRequestDispatcher("/orderSuccess.jsp").forward(request, response);
+            customerCart.clear();
+            totalPriceOfCart = 0;
+            Mail.getMailInstance().sendMail("Order Placed Successfully: " + madeOrder.getOrderID(), message, email);
 
-            } else {
-                //display an error message
-                out.println("<center><h2>Order Not Placed, Please Try Again</h2></center");
-                request.getRequestDispatcher("/customercart.jsp").include(request, response);
-            }
+        } else {
+            //display an error message
+            out.println("<center><h2>Order Not Placed, Please Try Again</h2></center");
+            request.getRequestDispatcher("/customercart.jsp").include(request, response);
+        }
 
     }
 
@@ -247,7 +268,7 @@ public class CustomerController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("restaurantOrder.jsp");
         dispatcher.forward(request, response);
     }
-    
+
     private void inquire(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         UserDAO daoObj = DAOFactory.createDAO("customer");
@@ -258,19 +279,123 @@ public class CustomerController extends HttpServlet {
         AdapterInterface adpt = new Adapter();
         String date = adpt.getDate();
         String status = adpt.status();
-        Inquiry inquiry = new Inquiry(email, number, date, message, status); 
+        Inquiry inquiry = new Inquiry(email, number, date, message, status);
         boolean isInquired = ((customerDAO) daoObj).addInquiry(inquiry);
         if (isInquired) {
-            request.getRequestDispatcher("addedSuccess.html").include(request, response);//display success message
+            request.getRequestDispatcher("addedSuccess.jsp").include(request, response);//display success message
         } else {
-            request.getRequestDispatcher("addednonsuccess.html").include(request, response);//display error message
+            request.getRequestDispatcher("addednonsuccess.jsp").include(request, response);//display error message
         }
-        
+
     }
+
+    private void orders(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession theSession = request.getSession();
+            String email = (String) theSession.getAttribute("email");
+            UserDAO daoObj = DAOFactory.createDAO("customer");
+            ArrayList<Order> orderList = ((customerDAO) daoObj).vieworder(email);
+
+            if (orderList.isEmpty()) {
+                out.println("<center><h2>No Orders</h2></center>");
+                request.getRequestDispatcher("/customerorders.jsp").forward(request, response);
+            } else {
+                request.setAttribute("orderlist", orderList);
+                request.getRequestDispatcher("/customerorders.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            System.out.println("Error in Servlet: " + e);
+        }
+    }
+
+    private void viewFullOrder(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String orderID = request.getParameter("orderID");
+            UserDAO daoObj = DAOFactory.createDAO("customer");
+
+            ArrayList<Items> allOrderProducts = ((customerDAO) daoObj).viewAllOrderItems(orderID);
+            if (allOrderProducts.isEmpty()) {
+                request.getRequestDispatcher("/NoOrderInfo.jsp").include(request, response);
+            } else {
+                request.setAttribute("products", allOrderProducts);
+                request.setAttribute("orderID", orderID);
+                request.getRequestDispatcher("viewFullOrder.jsp").forward(request, response);
+            }
+        } catch (Exception ex) {
+            System.out.println("Error in servlet: " + ex);
+        }
+    }
+
+    private void removeItemCart(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String productID = request.getParameter("productID"); //retrieve product id to remove from cart from jsp
+
+            Iterator<Items> theIterator = customerCart.iterator();
+
+            while (theIterator.hasNext()) {
+                Items p = theIterator.next();
+                if (p.getItemId().equals(productID)) {
+                    customerCart.remove(p);
+                }
+            }
+
+            viewcart(request, response); //call the view cart method to reupdate the cart
+        } catch (Exception ex) {
+            System.out.println("Error Removing From Cart: " + ex);
+        }
+    }
+
+    private void reduceOneFromCart(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String productID = request.getParameter("productID");
+            //getting the productID parameter from the webpage.
+
+            for (Items product : customerCart) {
+                //using a for each loop to iterate through the thread safe arraylist
+                if (product.getItemId().equals(productID)) {
+                    //if the productIDs matches
+                    if (product.getItemQty() == 1) {
+                        //check if quantity of the product is eqaul to zero
+                        customerCart.remove(product);
+                        //if equal, remove product from the cart
+                    } else {
+                        product.setItemQty(product.getItemQty() - 1);
+                        //reducing the product quantity by one
+                        product.setTotalPriceInCart(product.getUnitPrice() * product.getItemQty());
+                        //setting the total price of the cart
+                    }
+                }
+            }
+            viewcart(request, response);
+            //calling viewCart method
+        } catch (Exception ex) {
+            System.out.println("Error in Serlvet: " + ex);
+        }
+    }
+
+    private void addOneFromCart(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String productID = request.getParameter("productID"); //retrieve product id passed from the jsp page
+
+            for (Items theProduct : customerCart) {
+                //iterate through list and search for the product
+                if (theProduct.getItemId().equals(productID)) {
+                    //once product is found, increase the quantity by one
+                    theProduct.setItemQty(theProduct.getItemQty()+ 1);
+                    theProduct.setTotalPriceInCart(theProduct.getUnitPrice() * theProduct.getItemQty()); //calculate the new total for the product in cart
+                }
+            }
+
+            viewcart(request, response); //call the view cart method to ensure that the cart is loaded to the user
+
+        } catch (Exception ex) {
+            System.out.println("Error in Servlet: " + ex);
+        }
+    }
+
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }

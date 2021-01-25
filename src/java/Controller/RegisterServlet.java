@@ -54,7 +54,7 @@ public class RegisterServlet extends HttpServlet {
          UserDAO daoObj = DAOFactory.createDAO("customer");
          boolean isUserExist = ((customerDAO) daoObject).checkUserExist(email);
          if (isUserExist) {
-            request.getRequestDispatcher("successRegister.jsp").include(request, response);//display success message
+            request.getRequestDispatcher("nonsuccessRegister.jsp").include(request, response);//display success message
         } else {
              Users user = new Users(firstName, lastName, email, password, Address, dob, phone,role, profilepic);
              ((customerDAO) daoObject).addUser(user);

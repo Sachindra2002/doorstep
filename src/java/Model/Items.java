@@ -24,8 +24,8 @@ public class Items {
         this.unitPrice = unitPrice;
         this.totalPriceInCart = totalPrice;
         this.itemQty = itemQty;
-    }
-
+    }            
+    
     Items(String itemId, String itemName, String itemCategory, Double unitPrice, int itemQty, double totalPrice, String itemPic) {
         this.itemId = itemId;
         this.itemName = itemName;
@@ -51,6 +51,15 @@ public class Items {
         this.itemName = itemName;
         this.itemCategory = itemCategory;
         this.unitPrice = unitPrice;
+    }
+
+    Items(String productID, String productType, String productName, double unitPrice, int quantity, double productPrice) {
+        this.itemId = productID;
+        this.itemCategory = productType;
+        this.itemName = productName;
+        this.unitPrice = unitPrice;
+        this.itemQty = quantity;
+        this.totalPriceInCart = productPrice;
     }
     
     public String getItemId() {

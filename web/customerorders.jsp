@@ -1,6 +1,6 @@
 <%-- 
-    Document   : customercart
-    Created on : Jan 20, 2021, 9:27:23 PM
+    Document   : customerorders
+    Created on : Jan 24, 2021, 11:15:58 PM
     Author     : Sachindra Rodrigo
 --%>
 
@@ -13,7 +13,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link type="text/css" rel="stylesheet" href="CSS/customercart.css">
+        <link type="text/css" rel="stylesheet" href="CSS/customerorder.css">
         <link rel="icon" href="Images/Capture4.PNG">
         <script >
 
@@ -23,17 +23,15 @@
         <c:url var="viewcart" value="CustomerController">
             <c:param name="command" value="VIEWCART"/>
         </c:url>
-        <c:url var="allorders" value="CustomerController">
-            <c:param name="command" value="ORDERS"/>
-        </c:url>
+
         <div class="topnav" id="mytopnav">
             <div id="mySidebar" class="sidebar">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
                 <a href="#">Sign Out</a>
-                <a href="${allorders}">Your Orders</a>
+                <a href="#">Your Orders</a>
                 <a href="${viewcart}">Your Cart</a>
                 <a href="#">Your Profile</a>
-                <a id="sidebarbottom" href="inquiry.html">Contact Us</a>
+                <a id="sidebarbottom" href="inquiry.jsp">Contact Us</a>
                 <a  href="#">About Us</a>
             </div>
             <div id="main">
@@ -51,47 +49,21 @@
                 </div>
             </div>
         </div>
-        <div class="Cartcontainer">
-            <h1 class="maintopic">Minimum Cart Value - LKR 3000</h1>
-            <form action="CustomerController" method="GET">
-                <input type="hidden" name="command" value="PROCEED">
 
-                <p class="labels">Total Amount Payable (LKR) -:</p>
-
-               
-                <div class="centerin"><input type="number" class="inputBox" id="cartAmount" name="totalCartAmount" value="<%=request.getAttribute("totalPriceOfCart")%>" readonly/></div>
-                 <p class="labels">Payment Type</p>
-                <div class="centerin"><select class="inputBox" name="paymentType">
-                        <option name="creditcard">Credit Card</option>
-                        <option name="paypal">PayPal</option>
-                        <option name="cashdelivery">Cash On Delivery</option>
-                    </select></div>
-                <div class="centerin"><input type="submit" id="order" class="button" value="Place Order" onclick="checkCart()"></div>
-
-            </form>
-        </div>
-        <h2 class="topic">Your Cart</h2>
-        <c:forEach var="product" items="${cartProducts}">
-            <c:url var="removeProduct" value="CustomerController">
-                <c:param name="productID" value="${product.itemId}"/>
-                <c:param name="command" value="REMOVEITEM"/>
-            </c:url> 
-            <c:url var="minus" value="CustomerController">
-                <c:param name="productID" value="${product.itemId}"/>
-                <c:param name="command" value="MINUSONE"/>
-            </c:url> 
-            <c:url var="ADD" value="CustomerController">
-                <c:param name="productID" value="${product.itemId}"/>
-                <c:param name="command" value="ADDONE"/>
-            </c:url> 
-            <div class="product">
-                <div>${product.itemName}</div><div>LKR - ${product.unitPrice}</div>
-
-                <div>${product.itemQty}</div>
-                <div>LKR - ${product.totalPriceInCart}</div>
-                <div><a class="linkButton" href="${removeProduct}">X</a> <a class="linkButton" href="${ADD}">+
-                    </a><a class="linkButton" href="${minus}">&#x2012;</a></div>
-            </div>
+        <h2 class="topic">Your Orders</h2>
+        <c:forEach var="order" items="${orderlist}">
+            <c:url var="ViewFull" value="CustomerController">
+                <c:param name="command" value="FULLORDER"/>
+                <c:param name="orderID" value="${order.orderID}"/>
+            </c:url>
+            <a href="${ViewFull}">
+                <div class="product">
+                    <div style="margin-bottom: 5px; margin-left: 10px; margin-top: 5px;">Order ID - ${order.orderID}</div>
+                    <div style="margin-bottom: 5px; margin-left: 10px">Date - ${order.orderDate}</div>
+                    <div style="margin-bottom: 5px; margin-left: 10px">Status - ${order.acceptedStatus}</div>
+                    <div style="margin-bottom: 5px; margin-left: 10px">Order Type - ${order.orderType}</div>
+                </div>
+            </a>
         </c:forEach>
         <script>
             function checkCart() {
@@ -151,3 +123,4 @@
         </script>
     </body>
 </html>
+

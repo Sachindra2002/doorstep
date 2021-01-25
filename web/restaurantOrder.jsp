@@ -25,21 +25,24 @@
         <c:url var="viewcart" value="CustomerController">
             <c:param name="command" value="VIEWCART"/>
         </c:url>
+        <c:url var="allorders" value="CustomerController">
+            <c:param name="command" value="ORDERS"/>
+        </c:url>
         <div class="topnav" id="mytopnav">
             <div id="mySidebar" class="sidebar">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
                 <a href="#">Sign Out</a>
-                <a href="#">Your Orders</a>
+                <a href="${allorders}">Your Orders</a>
                 <a href="${viewcart}">Your Cart</a>
                 <a href="#">Your Profile</a>
-                <a id="sidebarbottom" href="#">Contact Us</a>
+                <a id="sidebarbottom" href="inquiry.html">Contact Us</a>
                 <a  href="#">About Us</a>
             </div>
             <div id="main">
 
                 <button class="openbtn" onclick="openNav()">☰</button> 
                 <div class="centerHeader">
-                    <a href="#"><img src="Images/Capture3.PNG"  width="230"></a>
+                    <a href="CustomerController"><img src="Images/Capture3.PNG"  width="230"></a>
                 </div>
                 <a id="right" href="#">Sign Out</a>
                 <div class="search-container">

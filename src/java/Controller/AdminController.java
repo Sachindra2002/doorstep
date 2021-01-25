@@ -6,10 +6,15 @@
 package Controller;
 
 import Model.AdminDAO;
+import Model.AscendingSort;
+import Model.DAO;
 import Model.DAOFactory;
+import Model.DescendingSort;
 import Model.Items;
+import Model.Order;
 import Model.RestaurantFactory;
 import Model.Restaurants;
+import Model.StrategySorter;
 import Model.UserDAO;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,6 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -53,8 +61,14 @@ public class AdminController extends HttpServlet {
                 addRestaurant(request, response);
                 break;
             }
-            case "NOTIFYOBSERVERS": {
-                notifyObservers(request, response);
+
+            case "VIEWALLORDERS": {
+                viewAllOrders(request, response);
+                break;
+            }
+
+            case "SORTORDERS": {
+                sortOrder(request, response);
                 break;
             }
 
@@ -73,14 +87,16 @@ public class AdminController extends HttpServlet {
         }
     }
 
-    private void AdminHome(HttpServletRequest request, HttpServletResponse response) {
+    private void AdminHome(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("AdminHome.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void addItemMenu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String itemName = request.getParameter("itemName");
         String category = request.getParameter("category");
         double unitPrice = Double.parseDouble(request.getParameter("itemprice"));
-        String restaurantName = "La Pizzeria";
+        String restaurantName = request.getParameter("restaurant");
         double totalPrice = unitPrice;
         String itemPic = "empty";
         int qty = 1;
@@ -95,9 +111,9 @@ public class AdminController extends HttpServlet {
         boolean isItemAdded = ((AdminDAO) daoObj).addItem(item);
 
         if (isItemAdded) {
-            request.getRequestDispatcher("addedSuccess.html").include(request, response);//display success message
+            request.getRequestDispatcher("itemsaddedSuccess.jsp").include(request, response);//display success message
         } else {
-            request.getRequestDispatcher("addednonsuccess.html").include(request, response);//display error message
+            request.getRequestDispatcher("itemsaddednonsuccess.jsp").include(request, response);//display error message
         }
     }
 
@@ -151,7 +167,7 @@ public class AdminController extends HttpServlet {
             if (isRestaurantAdded) {
                 request.getRequestDispatcher("restaurantAddedSuccess.html").include(request, response);//display success message
             } else {
-                request.getRequestDispatcher("addednonsuccess.html").include(request, response);//display error message
+                request.getRequestDispatcher("restaurantaddednonsuccess.jsp").include(request, response);//display error message
             }
         } catch (Exception ex) {
             System.out.println(ex);
@@ -159,8 +175,54 @@ public class AdminController extends HttpServlet {
 
     }
 
-    private void notifyObservers(HttpServletRequest request, HttpServletResponse response) {
-        
+    private void viewAllOrders(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            //method used to get all the pending orders
+            PrintWriter out = response.getWriter(); //get an object of printwriter
+            response.setContentType("text/html"); //setting the resposne type to html
+
+            //DAO theDAO = new DAO(); //create an instance of DAO
+            //<Order> orderList = theDAO.getAllOrders();
+            UserDAO daoObj = DAOFactory.createDAO("admin");
+            ArrayList<Order> orderList = ((AdminDAO) daoObj).getAllOrders();
+
+            if (orderList.isEmpty()) {
+                //check if list is empty
+                out.println("<center><h2>No Orders Present In The System. Please Check Again Later</h2></center>"); //display error message to user
+                request.getRequestDispatcher("viewOrders.jsp").include(request, response); //show error in stock manager home page
+            } else {
+                request.setAttribute("orders", orderList);
+                request.getRequestDispatcher("viewOrders.jsp").forward(request, response); //forward the request to user
+            }
+        } catch (Exception ex) {
+            System.out.println("Error :" + ex);
+        }
+    }
+
+    private void sortOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sortType = request.getParameter("orderDate");
+
+        if (sortType.equals("Ascending")) {
+            StrategySorter sSorter = new StrategySorter();
+
+            sSorter.setSortObject(new AscendingSort());
+
+            List<Order> orderList = sSorter.sortOrderDate();
+
+            request.setAttribute("orders", orderList);
+            request.getRequestDispatcher("/viewOrders.jsp").forward(request, response);
+
+        } else {
+
+            StrategySorter sSorter = new StrategySorter();
+
+            sSorter.setSortObject(new DescendingSort());
+
+            List<Order> orderList = sSorter.sortOrderDate();
+
+            request.setAttribute("orders", orderList);
+            request.getRequestDispatcher("/viewOrders.jsp").forward(request, response);
+        }
     }
 
     @Override
