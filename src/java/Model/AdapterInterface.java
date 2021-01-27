@@ -11,6 +11,5 @@ package Model;
  */
 public interface AdapterInterface {
     public String getDate();
-    public String status();
-    
+    public String status(); 
 }

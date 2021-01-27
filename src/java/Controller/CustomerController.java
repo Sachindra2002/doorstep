@@ -214,8 +214,7 @@ public class CustomerController extends HttpServlet {
         System.out.println(totalAmount);
         AdapterInterface adpt = new Adapter();
         String orderDate = adpt.getDate();
-        //Date orderDate = new Date(System.currentTimeMillis());
-        String orderStatus = "Pending";
+        String orderStatus = adpt.status();
 
         Order theNewOrder = new Order(orderDate.toString(), orderStatus, orderMethod, email, totalAmount); //create a new order instance
         Order_Product theCart = new Order_Product(theNewOrder, customerCart);

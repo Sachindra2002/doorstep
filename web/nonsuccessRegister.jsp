@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1 style="text-align: center; font-family: sans-serif; margin-top: 100px;">Could not create account</h1>
+        <h1 style="text-align: center; font-family: sans-serif; margin-top: 100px;">Email is already in use!</h1>
         <a href="login.html"><button style="border: none; background-color: lime; margin-left: 650px; width: 200px; height: 50px;">Add One more</button></a>
     </body>
 </html>

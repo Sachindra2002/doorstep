@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>doorstep</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link type="text/css" rel="stylesheet" href="CSS/login.css">
@@ -24,9 +24,10 @@ and open the template in the editor.
                     <input type="date" name="date" required />
                     <input name="address" type="text" placeholder="Address" required/>
                     <input name="phone" type="text" placeholder="Phone" required/>
-                    <input name="password" type="password" placeholder="Password" />
-                    <input name="password2" type="password" placeholder="Re-Enter Password" />
-                    <button>Sign Up</button>
+                    <input id="password" name="password" type="password" placeholder="Password" />
+                    <input id="password0" name="password2" type="password" placeholder="Re-Enter Password" />
+                    <span id="confirm-message2" class="confirm-message"></span>
+                    <button onclick="return validate()">Sign Up</button>
                 </form>
             </div>
             <div class="form-container sign-in-container">         
@@ -53,15 +54,6 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-        <!-- <div>
-            <form action="loginController" method="POST">
-                <label for="email">Email</label>
-                <input type="email" name="email">
-                <label for="password">Password</label>
-                <input id="password" type="password" name="password" required placeholder="Enter password">
-                <input type="submit" class="button" name="submit" value="Sign In">
-            </form>
-        </div>-->
         <script>
             const signUpButton = document.getElementById("signUp");
             const signInButton = document.getElementById("signIn");
@@ -74,6 +66,40 @@ and open the template in the editor.
             signInButton.addEventListener("click", () => {
                 container.classList.remove("right-panel-active");
             });
+            function validate()
+            {
+                var password = document.getElementById('password').value;
+                var confirmPassword = document.getElementById("password0").value;
+                
+                if (password != confirmPassword)
+                {
+                    alert("Passwords entered do not match!");
+                    return false;
+                }
+                return true;
+            }
+            
+            function checkPass()
+            {
+                var password = document.getElementById('password');
+                var confirm  = document.getElementById('password0');
+                var message = document.getElementById('confirm-message2');
+                
+                var good_color = "#00ff00";
+                var bad_color  = "#ff0000";
+                
+                if(password.value == confirm.value)
+                {
+                    message.style.color           = good_color;
+                    message.innerHTML = "Passwords Match!";
+                }
+                else
+                {
+                    message.style.color = bad_color;
+                    message.innerHTML = "Passwords Do Not Match!";
+                }
+                
+            }
 
         </script>
     </body>

@@ -54,7 +54,7 @@
             <h1>Contact Us</h1>
             <form method="GET" action="CustomerController">
                 <input type="hidden" name="command" value="ADDINQUIRY">
-                <div class="texts"><textarea id="mytextarea" class="message" name="message"></textarea></div>
+                <div class="texts"><textarea id="mytextarea" class="message" name="message" required></textarea></div>
                 <input type="submit" class="button" value="Submit"/>
             </form>
         </div>
