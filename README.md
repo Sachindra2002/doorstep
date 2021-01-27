@@ -7,4 +7,7 @@ Singleton - Facade - Factory - Adapter - Flyweight - Strategy - Proxy
 
 ![pic2](https://user-images.githubusercontent.com/52739523/105976575-587f8a80-60b6-11eb-9d80-9f26a5b2856f.png)
 
+![pic3](https://user-images.githubusercontent.com/52739523/105976680-7cdb6700-60b6-11eb-8ded-cce3413b979b.png)
+
+
 
